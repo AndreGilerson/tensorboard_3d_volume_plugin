@@ -147,10 +147,12 @@ const animate = () => {
     });
 };
 
+var loader = null;
+var gui = null;
+var stackFolder = null;
+
 createGui();
 animate();
-
-var loader = null;
 
 const showVolume = async () => {
     console.log("file loaded");
@@ -190,10 +192,25 @@ const showVolume = async () => {
     camera.canvas = canvas;
     camera.update();
     camera.fitBox(2);
+
+    if (stackFolder != null)
+    {
+        gui.remove(stackFolder);
+    }
+    stackFolder = gui.addFolder('Stack');
+    stackFolder
+        .add(stackHelper, 'index', 0, stackHelper.stack.dimensionsIJK.z - 1)
+        .step(1)
+        .listen();
+    stackFolder
+        .add(stackHelper.slice, 'interpolation', 0, 1)
+        .step(1)
+        .listen();
+    stackFolder.open();
 }
 
 async function createGui() {
-    const gui = new dat.GUI({
+    gui = new dat.GUI({
         autoPlace: false,
     });
 
