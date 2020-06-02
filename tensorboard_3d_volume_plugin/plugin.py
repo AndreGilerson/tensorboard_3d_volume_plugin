@@ -8,8 +8,6 @@ from tensorboard.util import tensor_util
 import werkzeug
 from werkzeug import wrappers
 
-from tensorboard_3d_volume_plugin import metadata
-
 from tensorboard import errors
 from tensorboard import plugin_util
 from tensorboard.backend import http_util

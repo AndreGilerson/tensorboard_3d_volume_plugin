@@ -31,7 +31,7 @@ class TB3DVolumeSummary(object):
         ants.image_write(img, os.path.join(self._log_dir, filename + ".nii.gz"))
 
         plugin_data = tf.SummaryMetadata.PluginData(
-            plugin_name='"tb_3d_volume_plugin"',
+            plugin_name="tb_3d_volume_plugin",
             content=TextPluginData(version=0).SerializeToString())
         metadata = tf.SummaryMetadata(plugin_data=plugin_data)
         tensor = TensorProto(dtype='DT_STRING',
