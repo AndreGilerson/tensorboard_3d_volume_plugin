@@ -19,10 +19,11 @@ class TB3DVolumeSummary(object):
         os.makedirs(self._log_dir, exist_ok=True)
     
     def add_3dvolume(self, volume, tag, global_step=None, walltime=None):
+        filename = tag + "_"
         if global_step is None:
-            filename = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            filename += datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         else:
-            filename = str(global_step)
+            filename += str(global_step)
         
         if isinstance(volume, torch.Tensor):
             volume = volume.detach().cpu().numpy()
