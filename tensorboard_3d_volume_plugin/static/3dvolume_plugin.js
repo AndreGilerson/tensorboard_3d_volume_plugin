@@ -147,10 +147,15 @@ const animate = () => {
     });
 };
 
+var loader = null;
+var gui = null;
+var stackFolder = null;
+var indexSlider = null;
+var interpolationSlider = null;
+var stackHelper = null;
+
 createGui();
 animate();
-
-var loader = null;
 
 const showVolume = async () => {
     console.log("file loaded");
@@ -158,8 +163,16 @@ const showVolume = async () => {
     const stack = series[0].stack[0];
     loader.free();
     lodaer = null;
+    
+    if(stackHelper == null)
+    {
+	stackHelper = new AMI.StackHelper(stack)
+    } else {
+	scene.remove(stackHelper);
 
-    const stackHelper = new AMI.StackHelper(stack);
+	stackHelper.dispose();
+	stackHelper = new AMI.StackHelper(stack)
+    }
     stackHelper.bbox.visible = false;
     stackHelper.border.color = colors.red;
     scene.add(stackHelper);
@@ -190,10 +203,27 @@ const showVolume = async () => {
     camera.canvas = canvas;
     camera.update();
     camera.fitBox(2);
+
+    if (stackFolder != null)
+    {
+        stackFolder.remove(indexSlider);
+	stackFolder.remove(interpolationSlider);
+    } else {
+	stackFolder = gui.addFolder("Stack");
+    } 
+    indexSlider = stackFolder
+        .add(stackHelper, 'index', 0, stackHelper.stack.dimensionsIJK.z - 1)
+        .step(1)
+        .listen();
+    interpolationSlider = stackFolder
+        .add(stackHelper.slice, 'interpolation', 0, 1)
+        .step(1)
+        .listen();
+    stackFolder.open();
 }
 
 async function createGui() {
-    const gui = new dat.GUI({
+    gui = new dat.GUI({
         autoPlace: false,
     });
 

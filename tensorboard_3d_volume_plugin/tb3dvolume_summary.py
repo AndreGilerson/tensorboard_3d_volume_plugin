@@ -1,3 +1,14 @@
+"""
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
+"""
 import os
 import datetime
 
@@ -19,10 +30,11 @@ class TB3DVolumeSummary(object):
         os.makedirs(self._log_dir, exist_ok=True)
     
     def add_3dvolume(self, volume, tag, global_step=None, walltime=None):
+        filename = tag + "_"
         if global_step is None:
-            filename = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            filename += datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         else:
-            filename = str(global_step)
+            filename += str(global_step)
         
         if isinstance(volume, torch.Tensor):
             volume = volume.detach().cpu().numpy()
